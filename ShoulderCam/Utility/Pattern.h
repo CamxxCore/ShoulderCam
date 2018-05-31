@@ -6,8 +6,9 @@ namespace Utility {
 template <typename T>
 class PatternMatch {
   public:
-    T result;
-    PatternMatch( T item ) : result( item ) {};
+    uintptr_t result;
+
+    PatternMatch( const uintptr_t addr ) : result( addr ) {};
 
     T get( int offset = 0 ) {
         return reinterpret_cast<T>( result + offset );
@@ -52,13 +53,6 @@ class PatternMatch {
         auto addr = reinterpret_cast<T>( result + offset );
         return *reinterpret_cast<int32_t*>( addr + 5 ) + addr + 9;
     }
-
-    explicit operator T&() {
-        return result;
-    }
-    explicit operator T() const {
-        return result;
-    }
 };
 
 template <typename T>
@@ -84,7 +78,7 @@ class Pattern {
                 LOG( "PatternSearch: Found match (%s : %s) @ %p",
                      HexString( reinterpret_cast<PBYTE>( m_patternData ), static_cast<int>( strlen( m_dataStrMask ) ) ).c_str(), m_dataStrMask, address );
 #endif
-                m_vecMatches.push_back( PatternMatch<T>( reinterpret_cast<T>( address ) ) );
+                m_vecMatches.push_back( PatternMatch<T>( reinterpret_cast<uintptr_t>( address ) ) );
 
                 if ( !m_bFindAllMatches ) return;
             }
