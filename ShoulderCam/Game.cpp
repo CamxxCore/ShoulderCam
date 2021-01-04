@@ -41,7 +41,7 @@ bool Game::Initialize( eGameVersion version ) {
 
     if ( patternResult.size() ) {
 
-        result = ( uintptr_t )patternResult.get().get( -0x28 );
+        result = ( uintptr_t )patternResult.get().get( -0x30 );
 
         LOG( "CamMetadataPool found at 0x%llX", result );
     }
